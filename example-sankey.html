@@ -56,6 +56,7 @@ import {define} from "./_observablehq/client.c78d806f.js";
 import {registerFile} from "./_observablehq/stdlib.831f6193.js";
 
 registerFile("./data/energy.csv", {"name":"./data/energy.csv","mimeType":"text/csv","path":"./_file/data/energy.283c8f9e.csv","lastModified":1725580136285});
+registerFile("./data/jobgraph_output.csv", {"name":"./data/jobgraph_output.csv","mimeType":"text/csv","path":"./_file/data/jobgraph_output.4076bad5.csv","lastModified":1725651878380});
 
 define({id: "9d21cd21", inputs: ["FileAttachment"], outputs: ["d3","d3Sankey","energy"], body: async (FileAttachment) => {
 const [d3, d3Sankey] = await Promise.all([import("./_npm/d3@7.9.0/7055d4c5.js"), import("./_node/d3-sankey@0.12.3/index.01c7f8ef.js")]);
@@ -241,6 +242,28 @@ SankeyChart({
 ))
 }});
 
+define({id: "fb73cb41", inputs: ["FileAttachment"], outputs: ["jobs"], body: (FileAttachment) => {
+const jobs = FileAttachment("./data/jobgraph_output.csv").csv({typed: true})
+return {jobs};
+}});
+
+define({id: "abdba3df", inputs: ["display","jobs"], body: (display,jobs) => {
+display(jobs)
+}});
+
+define({id: "13b6cc91", inputs: ["SankeyChart","jobs","d3","width","display"], body: async (SankeyChart,jobs,d3,width,display) => {
+display(await(
+SankeyChart({
+  links: jobs
+}, {
+  nodeGroup: d => d.id.split(/\W/)[0], // take first word for color
+  format: (f => d => `${f(d)} TWh`)(d3.format(",.1~f")),
+  width,
+  height: 600
+})
+))
+}});
+
 </script>
 <input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
 <label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
@@ -268,9 +291,12 @@ SankeyChart({
 <div class="observablehq observablehq--block"><!--:068eb2c6:--></div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:d2b67e98:--></div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:21a4a21b:--></div>
+<div class="observablehq observablehq--block"><!--:fb73cb41:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:abdba3df:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:13b6cc91:--></div>
 </main>
 <footer id="observablehq-footer">
 <nav><a rel="prev" href="./example-d3"><span>Running a d3 plot</span></a><a rel="next" href="./sandwich"><span>Imputing missing data using Tensor Sandwich</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-09-05T19:56:07">Sep 5, 2024</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-09-06T14:49:06">Sep 6, 2024</a>.</div>
 </footer>
 </div>
