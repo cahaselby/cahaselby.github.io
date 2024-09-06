@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Multi-layer Networks and Community Detection with TWIST | Merry Page</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-midnight.a9867c1e.css">
+<link rel="preload" as="style" href="./_npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-midnight.a9867c1e.css">
+<link rel="stylesheet" type="text/css" href="./_npm/katex@0.16.11/dist/katex.min.css">
+<link rel="modulepreload" href="./_observablehq/client.c78d806f.js">
+<link rel="modulepreload" href="./_observablehq/runtime.56d81cb2.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.831f6193.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/tex.c8bffae1.js">
+<link rel="modulepreload" href="./_npm/katex@0.16.11/c006fecc.js">
+<link rel="icon" href="./_file/observable.1af93621.png" type="image/png" sizes="32x32">
+<script type="module">
+
+import {define} from "./_observablehq/client.c78d806f.js";
+
+define({id: "5f213e18", mode: "inline", inputs: ["tex","display"], body: async (tex,display) => {
+display(await(
+tex`(i,j)`
+))
+}});
+
+define({id: "c61fd81b", mode: "inline", inputs: ["tex","display"], body: async (tex,display) => {
+display(await(
+tex`(j,i)`
+))
+}});
+
+define({id: "2f32f4cd", mode: "inline", inputs: ["tex","display"], body: async (tex,display) => {
+display(await(
+tex`i,j`
+))
+}});
+
+define({id: "828eccc1", mode: "inline", inputs: ["tex","display"], body: async (tex,display) => {
+display(await(
+tex`E = mc^2`
+))
+}});
+
+</script>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link"><a href="./">Merry Page</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link"><a href="./example-d3">Running a d3 plot</a></li>
+    <li class="observablehq-link"><a href="./example-sankey">Running a d3 sankey plot</a></li>
+    <li class="observablehq-link"><a href="./sandwich">Imputing missing data using Tensor Sandwich</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./twist">Multi-layer Networks and Community Detection with TWIST</a></li>
+    <li class="observablehq-link"><a href="./voting-power">Voting Power</a></li>
+  </ol>
+</nav>
+<script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<aside id="observablehq-toc" data-selector="h1:not(:first-of-type)[id], h2:first-child[id], :not(h1) + h2[id]">
+<nav>
+<div>Contents</div>
+<ol>
+<li class="observablehq-secondary-link"><a href="#background">Background</a></li>
+</ol>
+</nav>
+</aside>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<h1 id="multi-layer-networks-and-community-detection-with-twist" tabindex="-1"><a class="observablehq-header-anchor" href="#multi-layer-networks-and-community-detection-with-twist">Multi-layer Networks and Community Detection with TWIST</a></h1>
+<p>I'm going to do some community detection on multi-layer stochastic block models (MSBM). Our illustrative example will use international trade data on different food stuffs. First though I'll explain with some cooked up data about what an MSBM really is and why factoring it makes sense.</p>
+<p>The method I will use is a regularized tensor decomposition - we're going to factor a certain data tensor into a type of tucker decomposition. Note this isn't my method, it was first described <a href="https://arxiv.org/abs/2002.04457" target="_blank" rel="noopener noreferrer">here</a></p>
+<h2 id="background" tabindex="-1"><a class="observablehq-header-anchor" href="#background">Background</a></h2>
+<p>A graph or network for our purposes is a set of relationships between things. Two vertices are adjacent if there is an edge between them. We can concisely represent a given graph between a fixed number of vertices using an adjaceny matrix. An adjacency matrix for a graph is a symmetric square matrix, where the index for rows or the columns is some ordering of the vertices and we put a one for location <observablehq-loading></observablehq-loading><!--:5f213e18:--> and <observablehq-loading></observablehq-loading><!--:c61fd81b:--> if vertices <observablehq-loading></observablehq-loading><!--:2f32f4cd:--> are connected by an edge.</p>
+<p>My favorite equation is <observablehq-loading></observablehq-loading><!--:828eccc1:-->.</p>
+</main>
+<footer id="observablehq-footer">
+<nav><a rel="prev" href="./sandwich"><span>Imputing missing data using Tensor Sandwich</span></a><a rel="next" href="./voting-power"><span>Voting Power</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-09-05T19:56:07">Sep 5, 2024</a>.</div>
+</footer>
+</div>

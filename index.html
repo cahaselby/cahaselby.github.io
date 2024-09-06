@@ -1,7 +1,141 @@
 <!DOCTYPE html>
-<html>
-<body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
-</body>
-</html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Merry Page</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-midnight.a9867c1e.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-midnight.a9867c1e.css">
+<link rel="modulepreload" href="./_observablehq/client.c78d806f.js">
+<link rel="modulepreload" href="./_observablehq/runtime.56d81cb2.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.831f6193.js">
+<link rel="icon" href="./_file/observable.1af93621.png" type="image/png" sizes="32x32">
+<script type="module">
+
+import {define} from "./_observablehq/client.c78d806f.js";
+import {registerFile} from "./_observablehq/stdlib.831f6193.js";
+
+registerFile("./fig/portrait.jpg", {"name":"./fig/portrait.jpg","mimeType":"image/jpeg","path":"./_file/fig/portrait.e239336c.jpg","lastModified":1725123803605});
+
+define({id: "8348abed", outputs: ["dayssincedefeat"], body: () => {
+const dayssincedefeat = 0
+return {dayssincedefeat};
+}});
+
+define({id: "024a7504", mode: "inline", inputs: ["dayssincedefeat","display"], body: async (dayssincedefeat,display) => {
+display(await(
+dayssincedefeat
+))
+}});
+
+define({id: "8cbc7d39", mode: "inline", inputs: ["FileAttachment","display"], body: async (FileAttachment,display) => {
+display(await(
+    FileAttachment("./fig/portrait.jpg").image({
+    style: "border: 2px solid red; border-radius: 50%; box-shadow: 8px 8px 8px;",
+    width: 400,
+    onmouseover: (e)=> {
+      e.target.style.filter="grayscale(0.5)"
+    },
+    onmouseout:  (e)=> {
+      e.target.style.filter="grayscale(1.0)"
+    },
+    classList: "imghero baz",
+    style: "cursor: pointer;"
+  })
+  
+))
+}});
+
+</script>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link observablehq-link-active"><a href="./">Merry Page</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link"><a href="./example-d3">Running a d3 plot</a></li>
+    <li class="observablehq-link"><a href="./example-sankey">Running a d3 sankey plot</a></li>
+    <li class="observablehq-link"><a href="./sandwich">Imputing missing data using Tensor Sandwich</a></li>
+    <li class="observablehq-link"><a href="./twist">Multi-layer Networks and Community Detection with TWIST</a></li>
+    <li class="observablehq-link"><a href="./voting-power">Voting Power</a></li>
+  </ol>
+</nav>
+<script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<div class="observablehq observablehq--block"><!--:8348abed:--></div>
+<div class="hero">
+  <h1>Cullen Haselby</h1>
+    <h2>A man vs the machine</h2>
+    <h2>Days since last defeat to the robots: <observablehq-loading></observablehq-loading><!--:024a7504:--></h2>
+</div>
+<div class="grid grid-cols-2">
+  <div><observablehq-loading></observablehq-loading><!--:8cbc7d39:--></div>
+  <div class="card">A chart to go here</div>
+</div>
+<hr>
+<h2 id="things-to-do" tabindex="-1"><a class="observablehq-header-anchor" href="#things-to-do">Things to do</a></h2>
+<ul>
+<li>Create some sort of splashy data visualization to the right of my big dumb face on this page</li>
+<li>Make a punchy page of completing tensors using tensor sandwich research</li>
+<li>adapt your notebook on TWIST to also be a fun page</li>
+<li>talk about voting power from a game theory standpoint since its topical at the moment</li>
+<li>link back to my linked in so that all the links are in :S</li>
+</ul>
+<style>
+
+/** image above starts out gray because we added the foobar class **/
+.imghero {
+  filter: grayscale(1);
+  border: 20px;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--sans-serif);
+  margin: 4rem 0 8rem;
+  text-wrap: balance;
+  text-align: center;
+}
+
+.hero h1 {
+  margin: 1rem 0;
+  padding: 1rem 0;
+  max-width: none;
+  font-size: 14vw;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(30deg, var(--theme-foreground-muted), currentColor);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero h2 {
+  margin: 0;
+  max-width: 34em;
+  font-size: 20px;
+  font-style: initial;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--theme-foreground-muted);
+}
+
+@media (min-width: 640px) {
+  .hero h1 {
+    font-size: 90px;
+  }
+}
+
+</style>
+</main>
+<footer id="observablehq-footer">
+<nav><a rel="next" href="./example-d3"><span>Running a d3 plot</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-09-05T19:56:07">Sep 5, 2024</a>.</div>
+</footer>
+</div>
