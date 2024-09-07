@@ -10,17 +10,61 @@
 <link rel="modulepreload" href="./_observablehq/client.c78d806f.js">
 <link rel="modulepreload" href="./_observablehq/runtime.56d81cb2.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.831f6193.js">
+<link rel="modulepreload" href="./_import/components/Sankey.c13628d9.js">
+<link rel="modulepreload" href="./_npm/d3@7.9.0/7055d4c5.js">
+<link rel="modulepreload" href="./_node/d3-sankey@0.12.3/index.01c7f8ef.js">
+<link rel="modulepreload" href="./_npm/d3-dsv@3.0.1/407f7a1f.js">
+<link rel="modulepreload" href="./_npm/d3-array@3.2.4/e95f898e.js">
+<link rel="modulepreload" href="./_npm/d3-axis@3.0.0/d44feff9.js">
+<link rel="modulepreload" href="./_npm/d3-brush@3.0.0/5830b12a.js">
+<link rel="modulepreload" href="./_npm/d3-chord@3.0.1/84d7b8e9.js">
+<link rel="modulepreload" href="./_npm/d3-color@3.1.0/2c0cdfa2.js">
+<link rel="modulepreload" href="./_npm/d3-contour@4.0.2/626bedc4.js">
+<link rel="modulepreload" href="./_npm/d3-delaunay@6.0.4/00c41b5d.js">
+<link rel="modulepreload" href="./_npm/d3-dispatch@3.0.1/b5f7cdc6.js">
+<link rel="modulepreload" href="./_npm/d3-drag@3.0.0/b22c5864.js">
+<link rel="modulepreload" href="./_npm/d3-ease@3.0.1/6f15f633.js">
+<link rel="modulepreload" href="./_npm/d3-fetch@3.0.1/ef1ec490.js">
+<link rel="modulepreload" href="./_npm/d3-force@3.0.0/5e1ff060.js">
+<link rel="modulepreload" href="./_npm/d3-format@3.1.0/5851d7ef.js">
+<link rel="modulepreload" href="./_npm/d3-geo@3.1.1/dcd02767.js">
+<link rel="modulepreload" href="./_npm/d3-hierarchy@3.1.2/f1db2593.js">
+<link rel="modulepreload" href="./_npm/d3-interpolate@3.0.1/034b7bcb.js">
+<link rel="modulepreload" href="./_npm/d3-path@3.1.0/4bb53638.js">
+<link rel="modulepreload" href="./_npm/d3-polygon@3.0.1/bbafde58.js">
+<link rel="modulepreload" href="./_npm/d3-quadtree@3.0.1/aa5b35a8.js">
+<link rel="modulepreload" href="./_npm/d3-random@3.0.1/32c7fec2.js">
+<link rel="modulepreload" href="./_npm/d3-scale@4.0.2/567840a0.js">
+<link rel="modulepreload" href="./_npm/d3-scale-chromatic@3.1.0/cf9b720b.js">
+<link rel="modulepreload" href="./_npm/d3-selection@3.0.0/5dcd62f4.js">
+<link rel="modulepreload" href="./_npm/d3-shape@3.2.0/f8e03c56.js">
+<link rel="modulepreload" href="./_npm/d3-time@3.1.0/5bc129e1.js">
+<link rel="modulepreload" href="./_npm/d3-time-format@4.1.0/19c92b44.js">
+<link rel="modulepreload" href="./_npm/d3-timer@3.0.1/f31b5398.js">
+<link rel="modulepreload" href="./_npm/d3-transition@3.0.1/8debb4ba.js">
+<link rel="modulepreload" href="./_npm/d3-zoom@3.0.0/4b0cc581.js">
+<link rel="modulepreload" href="./_node/d3-array@2.12.1/index.62e7d53a.js">
+<link rel="modulepreload" href="./_node/d3-shape@1.3.7/index.83d6a97d.js">
+<link rel="modulepreload" href="./_npm/internmap@2.0.3/5eed35fd.js">
+<link rel="modulepreload" href="./_npm/delaunator@5.0.1/e67acb27.js">
+<link rel="modulepreload" href="./_node/internmap@1.0.1/index.3c90a66d.js">
+<link rel="modulepreload" href="./_node/d3-path@1.0.9/index.469bd717.js">
+<link rel="modulepreload" href="./_npm/robust-predicates@3.0.2/8ac9039b.js">
 <link rel="icon" href="./_file/observable.1af93621.png" type="image/png" sizes="32x32">
 <script type="module">
 
 import {define} from "./_observablehq/client.c78d806f.js";
 import {registerFile} from "./_observablehq/stdlib.831f6193.js";
 
+registerFile("./data/jobgraph_output.csv", {"name":"./data/jobgraph_output.csv","mimeType":"text/csv","path":"./_file/data/jobgraph_output.ca1b0480.csv","lastModified":1725683495227});
 registerFile("./fig/portrait.jpg", {"name":"./fig/portrait.jpg","mimeType":"image/jpeg","path":"./_file/fig/portrait.e239336c.jpg","lastModified":1725123803605});
 
-define({id: "8348abed", outputs: ["dayssincedefeat"], body: () => {
-const dayssincedefeat = 0
-return {dayssincedefeat};
+define({id: "ee660aef", inputs: ["FileAttachment"], outputs: ["SankeyChart","dayssincedefeat","jobs"], body: async (FileAttachment) => {
+const {SankeyChart} = await import("./_import/components/Sankey.c13628d9.js");
+
+const dayssincedefeat = 1
+const jobs = FileAttachment("./data/jobgraph_output.csv").csv({typed: true})
+return {SankeyChart,dayssincedefeat,jobs};
 }});
 
 define({id: "024a7504", mode: "inline", inputs: ["dayssincedefeat","display"], body: async (dayssincedefeat,display) => {
@@ -47,6 +91,23 @@ display(await(
 ))
 }});
 
+define({id: "654345cf", mode: "inline", inputs: ["SankeyChart","jobs","d3","display"], body: async (SankeyChart,jobs,d3,display) => {
+display(await(
+      SankeyChart({
+        links: jobs
+      }, {
+        //nodeGroup: d => d.id.split(/\W/).pop(), // take first word for color
+        nodeGroup: d => d.id,
+        format: (f => d => `${f(d)} TWh`)(d3.format(",.1~f")),
+        nodeAlign: 'left',
+        linkColor: 'source-target',
+        width: 1200,
+        height: 800
+      })
+    
+))
+}});
+
 </script>
 <input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
 <label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
@@ -66,17 +127,21 @@ display(await(
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
-<div class="observablehq observablehq--block"><!--:8348abed:--></div>
+<div class="observablehq observablehq--block"><!--:ee660aef:--></div>
 <div class="hero">
   <h1>Cullen Haselby</h1>
     <h2>A man vs the machine</h2>
     <h2>Days since last defeat to the robots: <observablehq-loading></observablehq-loading><!--:024a7504:--></h2>
 </div>
-<div class="grid grid-cols-2">
-  <div><observablehq-loading></observablehq-loading><!--:8cbc7d39:--></div>
-  <div class="card">A chart to go here</div>
-</div>
-<hr>
+<div class="grid grid-cols-2" ,="" style="grid-auto-rows: auto;">
+  <div style="width:400px; height: 600px; text-align:center"><observablehq-loading></observablehq-loading><!--:8cbc7d39:--></div>
+  <div class="card"> What goes here?</div>
+  <div class="grid grid-colspan-2">
+  <figure style="max-width:none">
+  <figcaption><h2>Sankey Chart of a Certain Person's USAJOBs Applications</h2></figcaption><observablehq-loading></observablehq-loading><!--:654345cf:-->
+    </figure></div>
+  </div>
+---
 <h2 id="things-to-do" tabindex="-1"><a class="observablehq-header-anchor" href="#things-to-do">Things to do</a></h2>
 <ul>
 <li>Create some sort of splashy data visualization to the right of my big dumb face on this page</li>
@@ -136,6 +201,6 @@ display(await(
 </main>
 <footer id="observablehq-footer">
 <nav><a rel="next" href="./example-d3"><span>Running a d3 plot</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-09-06T14:49:06">Sep 6, 2024</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-09-07T00:38:35">Sep 7, 2024</a>.</div>
 </footer>
 </div>

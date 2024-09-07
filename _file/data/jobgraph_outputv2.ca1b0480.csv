@@ -1,0 +1,56 @@
+source,target,value
+Department of Health and Human Services,Closed,10
+Department of Health and Human Services,Open,3
+Closed,Eligible,30
+Closed,Status unknown,67
+Closed,Hiring complete,3
+Closed,Job canceled,1
+Closed,Ineligible,21
+Eligible,Referred,19
+Eligible,Status unknown,4
+Eligible,Not referred,7
+Referred,Interviewed,3
+Referred,Status unknown,14
+Referred,Not interviewed,2
+Interviewed,TJO,1
+Interviewed,Status unknown,2
+Ineligible,Status unknown,18
+Ineligible,Hiring complete,3
+Not referred,Status unknown,7
+Not interviewed,Status unknown,2
+Department of Homeland Security,Closed,9
+Department of Homeland Security,Open,1
+Department of Justice,Closed,3
+Department of Justice,Open,1
+Department of the Navy,Closed,7
+Department of the Navy,Open,1
+Department of Defense,Closed,7
+Department of Defense,Open,2
+Department of the Air Force,Closed,4
+Department of the Air Force,Open,9
+Department of Transportation,Closed,3
+Department of Transportation,Open,6
+Department of the Army,Closed,21
+Department of the Army,Open,1
+Department of Commerce,Closed,8
+Department of the Treasury,Closed,8
+Department of the Treasury,Open,5
+Small Business Administration,Closed,1
+National Aeronautics and Space Administration,Closed,3
+Department of the Interior,Closed,3
+Department of Energy,Closed,2
+Department of Energy,Open,1
+Department of Veterans Affairs,Closed,3
+Department of Agriculture,Closed,17
+Department of Agriculture,Open,4
+Peace Corps,Closed,1
+Environmental Protection Agency,Closed,2
+National Science Foundation,Closed,2
+Office of Personnel Management,Closed,3
+African Development Foundation,Closed,1
+Department of State,Closed,1
+Social Security Administration,Closed,1
+Nuclear Regulatory Commission,Open,1
+Department of Education,Closed,1
+General Services Administration,Closed,1
+Executive Office of the President,Open,1
