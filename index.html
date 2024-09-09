@@ -7,13 +7,15 @@
 <link rel="preload" as="style" href="./_observablehq/theme-midnight.a9867c1e.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="stylesheet" type="text/css" href="./_observablehq/theme-midnight.a9867c1e.css">
-<link rel="modulepreload" href="./_observablehq/client.c78d806f.js">
+<link rel="modulepreload" href="./_observablehq/client.2ad04b6c.js">
 <link rel="modulepreload" href="./_observablehq/runtime.56d81cb2.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.831f6193.js">
 <link rel="modulepreload" href="./_import/components/Sankey.c13628d9.js">
 <link rel="modulepreload" href="./_npm/d3@7.9.0/7055d4c5.js">
 <link rel="modulepreload" href="./_node/d3-sankey@0.12.3/index.01c7f8ef.js">
 <link rel="modulepreload" href="./_npm/d3-dsv@3.0.1/407f7a1f.js">
+<link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.16/e828d8c8.js">
+<link rel="modulepreload" href="./_npm/topojson-client@3.1.0/44d97fcb.js">
 <link rel="modulepreload" href="./_npm/d3-array@3.2.4/e95f898e.js">
 <link rel="modulepreload" href="./_npm/d3-axis@3.0.0/d44feff9.js">
 <link rel="modulepreload" href="./_npm/d3-brush@3.0.0/5830b12a.js">
@@ -45,26 +47,75 @@
 <link rel="modulepreload" href="./_npm/d3-zoom@3.0.0/4b0cc581.js">
 <link rel="modulepreload" href="./_node/d3-array@2.12.1/index.62e7d53a.js">
 <link rel="modulepreload" href="./_node/d3-shape@1.3.7/index.83d6a97d.js">
+<link rel="modulepreload" href="./_npm/isoformat@0.2.1/c68fbd73.js">
+<link rel="modulepreload" href="./_npm/interval-tree-1d@1.0.4/a62ae5ce.js">
 <link rel="modulepreload" href="./_npm/internmap@2.0.3/5eed35fd.js">
 <link rel="modulepreload" href="./_npm/delaunator@5.0.1/e67acb27.js">
 <link rel="modulepreload" href="./_node/internmap@1.0.1/index.3c90a66d.js">
 <link rel="modulepreload" href="./_node/d3-path@1.0.9/index.469bd717.js">
+<link rel="modulepreload" href="./_npm/binary-search-bounds@2.0.5/1ee6c50d.js">
 <link rel="modulepreload" href="./_npm/robust-predicates@3.0.2/8ac9039b.js">
 <link rel="icon" href="./_file/observable.1af93621.png" type="image/png" sizes="32x32">
 <script type="module">
 
-import {define} from "./_observablehq/client.c78d806f.js";
+import {define} from "./_observablehq/client.2ad04b6c.js";
 import {registerFile} from "./_observablehq/stdlib.831f6193.js";
 
-registerFile("./data/jobgraph_output.csv", {"name":"./data/jobgraph_output.csv","mimeType":"text/csv","path":"./_file/data/jobgraph_output.ca1b0480.csv","lastModified":1725683495227});
+registerFile("./data/jobdate_output.csv", {"name":"./data/jobdate_output.csv","mimeType":"text/csv","path":"./_file/data/jobdate_output.685a5aa8.csv","lastModified":1725767577687});
+registerFile("./data/jobgraph_output.csv", {"name":"./data/jobgraph_output.csv","mimeType":"text/csv","path":"./_file/data/jobgraph_output.ca1b0480.csv","lastModified":1725744415481});
+registerFile("./data/joblocation_output.csv", {"name":"./data/joblocation_output.csv","mimeType":"text/csv","path":"./_file/data/joblocation_output.a274ec05.csv","lastModified":1725857024912});
+registerFile("./data/land-50m.json", {"name":"./data/land-50m.json","mimeType":"application/json","path":"./_file/data/land-50m.619477ff.json","lastModified":1725856807082});
 registerFile("./fig/portrait.jpg", {"name":"./fig/portrait.jpg","mimeType":"image/jpeg","path":"./_file/fig/portrait.e239336c.jpg","lastModified":1725123803605});
 
-define({id: "ee660aef", inputs: ["FileAttachment"], outputs: ["SankeyChart","dayssincedefeat","jobs"], body: async (FileAttachment) => {
+define({id: "4b9422e0", inputs: ["FileAttachment","topojson"], outputs: ["SankeyChart","dayssincedefeat","jobs","appdates","joblocations","land"], body: async (FileAttachment,topojson) => {
 const {SankeyChart} = await import("./_import/components/Sankey.c13628d9.js");
 
-const dayssincedefeat = 1
+const dayssincedefeat = 2
 const jobs = FileAttachment("./data/jobgraph_output.csv").csv({typed: true})
-return {SankeyChart,dayssincedefeat,jobs};
+const appdates = FileAttachment("./data/jobdate_output.csv").csv({typed: true})
+const joblocations = FileAttachment("./data/joblocation_output.csv").csv({typed: true});
+const land =   FileAttachment("./data/land-50m.json").json().then(world => topojson.feature(world, world.objects.land))
+return {SankeyChart,dayssincedefeat,jobs,appdates,joblocations,land};
+}});
+
+define({id: "5d386f40", inputs: ["appdates","Plot","d3"], outputs: ["removeOldRows","filteredData","appsperdayPlot"], body: (appdates,Plot,d3) => {
+function removeOldRows(data, dateColumn) {
+    const today = new Date()
+    
+    // Calculate the date two months ago
+    const twoMonthsAgo = new Date()
+    twoMonthsAgo.setMonth(today.getMonth() - 2)
+
+    // Filter the data to remove rows older than two months ago
+    const filteredData = data.slice(0,-1).filter( row=> {
+        const rowDate = new Date(row[dateColumn])
+        return rowDate >= twoMonthsAgo
+    })
+
+    return filteredData;
+}
+
+const filteredData = removeOldRows(appdates, 'Date')
+
+function appsperdayPlot(data, {width} = {}) {
+  return Plot.plot({
+    title: "Daily Application Rate",
+    width,
+    height: 250,
+    x: {type: "utc", ticks: d3.utcDay.every(2), label: null},
+    y: {grid: true, inset: 20, label: "Applications"},
+    marks: [
+      Plot.lineY(data, {
+        x: "Date",
+        y: "Count",
+        z: null, // varying color, not series
+        stroke: "yellow",
+        curve: "step-after"
+      })
+    ]
+  })
+}
+return {removeOldRows,filteredData,appsperdayPlot};
 }});
 
 define({id: "024a7504", mode: "inline", inputs: ["dayssincedefeat","display"], body: async (dayssincedefeat,display) => {
@@ -88,6 +139,30 @@ display(await(
     style: "cursor: pointer;"
   })
   
+))
+}});
+
+define({id: "bed4857b", mode: "inline", inputs: ["Plot","land","joblocations","display"], body: async (Plot,land,joblocations,display) => {
+display(await(
+Plot.plot({
+  title: "Data Science Series Jobs Posted in Last Day",
+  projection: {
+    type: "orthographic",
+    rotate: [110, -30],
+  },
+  marks: [
+    Plot.graticule(),
+    Plot.sphere(),
+    Plot.geo(land, {stroke: "var(--theme-foreground-faint)"}),
+    Plot.dot(joblocations, {x: "Longitude", y: "Latitude", r: 5, stroke: "#f43f5e"})
+  ]
+})
+))
+}});
+
+define({id: "bb97e4e5", mode: "inline", inputs: ["appsperdayPlot","filteredData","display"], body: async (appsperdayPlot,filteredData,display) => {
+display(await(
+appsperdayPlot(filteredData)
 ))
 }});
 
@@ -118,24 +193,30 @@ display(await(
   </ol>
   <ol>
     <li class="observablehq-link"><a href="./example-d3">Running a d3 plot</a></li>
+    <li class="observablehq-link"><a href="./example-dashboard">Example dashboard</a></li>
+    <li class="observablehq-link"><a href="./example-report">Example report</a></li>
     <li class="observablehq-link"><a href="./example-sankey">Running a d3 sankey plot</a></li>
+    <li class="observablehq-link"><a href="./example_plot">Untitled</a></li>
     <li class="observablehq-link"><a href="./sandwich">Imputing missing data using Tensor Sandwich</a></li>
     <li class="observablehq-link"><a href="./twist">Multi-layer Networks and Community Detection with TWIST</a></li>
     <li class="observablehq-link"><a href="./voting-power">Voting Power</a></li>
+    <li class="observablehq-link"><a href="./weather">Weather report</a></li>
   </ol>
 </nav>
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
-<div class="observablehq observablehq--block"><!--:ee660aef:--></div>
+<div class="observablehq observablehq--block"><!--:4b9422e0:--></div>
+<div class="observablehq observablehq--block"><!--:5d386f40:--></div>
 <div class="hero">
   <h1>Cullen Haselby</h1>
     <h2>A man vs the machine</h2>
     <h2>Days since last defeat to the robots: <observablehq-loading></observablehq-loading><!--:024a7504:--></h2>
 </div>
 <div class="grid grid-cols-2" ,="" style="grid-auto-rows: auto;">
-  <div style="width:400px; height: 600px; text-align:center"><observablehq-loading></observablehq-loading><!--:8cbc7d39:--></div>
-  <div class="card"> What goes here?</div>
+  <div class="grid grid-rowspan-2" style="width:400px; height: 600px; text-align:center"><observablehq-loading></observablehq-loading><!--:8cbc7d39:--></div>
+  <div class="card" style="width:400px; height: 450px"> <observablehq-loading></observablehq-loading><!--:bed4857b:--></div>
+  <div class="card" style="width:400px; height: 200px"> <observablehq-loading></observablehq-loading><!--:bb97e4e5:--></div>
   <div class="grid grid-colspan-2">
   <figure style="max-width:none">
   <figcaption><h2>Sankey Chart of a Certain Person's USAJOBs Applications</h2></figcaption><observablehq-loading></observablehq-loading><!--:654345cf:-->
@@ -144,7 +225,7 @@ display(await(
 ---
 <h2 id="things-to-do" tabindex="-1"><a class="observablehq-header-anchor" href="#things-to-do">Things to do</a></h2>
 <ul>
-<li>Create some sort of splashy data visualization to the right of my big dumb face on this page</li>
+<li>Create some sort of splashy data visualization to the right of my big dumb face on this page -- I'd say this is well on its way now</li>
 <li>Make a punchy page of completing tensors using tensor sandwich research</li>
 <li>adapt your notebook on TWIST to also be a fun page</li>
 <li>talk about voting power from a game theory standpoint since its topical at the moment</li>
@@ -196,11 +277,10 @@ display(await(
     font-size: 90px;
   }
 }
-
 </style>
 </main>
 <footer id="observablehq-footer">
 <nav><a rel="next" href="./example-d3"><span>Running a d3 plot</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-09-07T00:38:35">Sep 7, 2024</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-09-08T23:59:41">Sep 8, 2024</a>.</div>
 </footer>
 </div>
