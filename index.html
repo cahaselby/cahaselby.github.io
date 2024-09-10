@@ -61,9 +61,9 @@
 import {define} from "./_observablehq/client.2ad04b6c.js";
 import {registerFile} from "./_observablehq/stdlib.831f6193.js";
 
-registerFile("./data/jobdate_output.csv", {"name":"./data/jobdate_output.csv","mimeType":"text/csv","path":"./_file/data/jobdate_output.685a5aa8.csv","lastModified":1725767577687});
-registerFile("./data/jobgraph_output.csv", {"name":"./data/jobgraph_output.csv","mimeType":"text/csv","path":"./_file/data/jobgraph_output.ca1b0480.csv","lastModified":1725744415481});
-registerFile("./data/joblocation_output.csv", {"name":"./data/joblocation_output.csv","mimeType":"text/csv","path":"./_file/data/joblocation_output.a274ec05.csv","lastModified":1725857024912});
+registerFile("./data/jobdate_output.csv", {"name":"./data/jobdate_output.csv","mimeType":"text/csv","path":"./_file/data/jobdate_output.bbbf5220.csv","lastModified":1725933866930});
+registerFile("./data/jobgraph_output.csv", {"name":"./data/jobgraph_output.csv","mimeType":"text/csv","path":"./_file/data/jobgraph_output.a011264f.csv","lastModified":1725933827615});
+registerFile("./data/joblocation_output.csv", {"name":"./data/joblocation_output.csv","mimeType":"text/csv","path":"./_file/data/joblocation_output.5716f2b3.csv","lastModified":1725931870928});
 registerFile("./data/land-50m.json", {"name":"./data/land-50m.json","mimeType":"application/json","path":"./_file/data/land-50m.619477ff.json","lastModified":1725856807082});
 registerFile("./fig/portrait.jpg", {"name":"./fig/portrait.jpg","mimeType":"image/jpeg","path":"./_file/fig/portrait.e239336c.jpg","lastModified":1725123803605});
 
@@ -78,7 +78,7 @@ const land =   FileAttachment("./data/land-50m.json").json().then(world => topoj
 return {SankeyChart,dayssincedefeat,jobs,appdates,joblocations,land};
 }});
 
-define({id: "5d386f40", inputs: ["appdates","Plot","d3"], outputs: ["removeOldRows","filteredData","appsperdayPlot"], body: (appdates,Plot,d3) => {
+define({id: "61b94c21", inputs: ["appdates","Plot","d3"], outputs: ["removeOldRows","filteredData","appsperdayPlot"], body: (appdates,Plot,d3) => {
 function removeOldRows(data, dateColumn) {
     const today = new Date()
     
@@ -99,7 +99,7 @@ const filteredData = removeOldRows(appdates, 'Date')
 
 function appsperdayPlot(data, {width} = {}) {
   return Plot.plot({
-    title: "Daily Application Rate",
+    title: "USAJOBs Daily Application Rate",
     width,
     height: 250,
     x: {type: "utc", ticks: d3.utcDay.every(2), label: null},
@@ -142,10 +142,10 @@ display(await(
 ))
 }});
 
-define({id: "bed4857b", mode: "inline", inputs: ["Plot","land","joblocations","display"], body: async (Plot,land,joblocations,display) => {
+define({id: "f5b34269", mode: "inline", inputs: ["Plot","land","joblocations","display"], body: async (Plot,land,joblocations,display) => {
 display(await(
 Plot.plot({
-  title: "Data Science Series Jobs Posted in Last Day",
+  title: "Data Science-ish Openings on USAJOBs in the Last Day",
   projection: {
     type: "orthographic",
     rotate: [110, -30],
@@ -207,7 +207,7 @@ display(await(
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
 <div class="observablehq observablehq--block"><!--:4b9422e0:--></div>
-<div class="observablehq observablehq--block"><!--:5d386f40:--></div>
+<div class="observablehq observablehq--block"><!--:61b94c21:--></div>
 <div class="hero">
   <h1>Cullen Haselby</h1>
     <h2>A man vs the machine</h2>
@@ -215,7 +215,7 @@ display(await(
 </div>
 <div class="grid grid-cols-2" ,="" style="grid-auto-rows: auto;">
   <div class="grid grid-rowspan-2" style="width:400px; height: 600px; text-align:center"><observablehq-loading></observablehq-loading><!--:8cbc7d39:--></div>
-  <div class="card" style="width:400px; height: 450px"> <observablehq-loading></observablehq-loading><!--:bed4857b:--></div>
+  <div class="card" style="width:400px; height: 450px"> <observablehq-loading></observablehq-loading><!--:f5b34269:--></div>
   <div class="card" style="width:400px; height: 200px"> <observablehq-loading></observablehq-loading><!--:bb97e4e5:--></div>
   <div class="grid grid-colspan-2">
   <figure style="max-width:none">
@@ -281,6 +281,6 @@ display(await(
 </main>
 <footer id="observablehq-footer">
 <nav><a rel="next" href="./example-d3"><span>Running a d3 plot</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-09-08T23:59:41">Sep 8, 2024</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-09-09T21:05:50">Sep 9, 2024</a>.</div>
 </footer>
 </div>
